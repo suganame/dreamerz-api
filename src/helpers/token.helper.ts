@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { IUser } from "../interfaces/IUser"
-import { User } from "../models/User"
+import { IUser } from "../interfaces/User.interface"
+import { User } from "../models/User.model"
 import { Types } from "mongoose"
 const jwt = require("jsonwebtoken")
 
@@ -39,7 +39,7 @@ export const getUserByToken = async (
     const decoded: DecodedToken = jwt.verify(token, process.env.JWT_SECRET)
     const userId: Types.ObjectId = decoded.id
 
-    if (!token) {
+    if (token) {
         res.status(401).json({ message: "Acesso Negado!" })
     }
 

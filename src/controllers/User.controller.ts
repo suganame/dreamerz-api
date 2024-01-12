@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
-import { User } from "../models/User"
-import { IUser } from "../interfaces/IUser"
+import { User } from "../models/User.model"
+import { IUser } from "../interfaces/User.interface"
 import bcrypt from "bcrypt"
-import { createToken } from "../helpers/token"
+import { createToken } from "../helpers/token.helper"
 
 export default class UserController {
     static async create(req: Request, res: Response): Promise<Response> {

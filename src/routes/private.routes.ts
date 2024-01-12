@@ -1,5 +1,5 @@
 import { Router } from "express"
-import DreamController from "../controllers/DreamController"
+import DreamController from "../controllers/Dream.controller"
 
 const router = Router()
 

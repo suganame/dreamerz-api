@@ -1,7 +1,7 @@
 import "dotenv/config"
 const cors = require("cors")
 import express from "express"
-import db from "./db/mongo"
+import db from "./configs/mongo.config"
 import publicRoutes from "./routes/public.routes"
 import privateRoutes from "./routes/private.routes"
 

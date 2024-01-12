@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
-import { Dream } from "../models/Dream"
-import { getUserByToken } from "../helpers/token"
-import { IUser } from "../interfaces/IUser"
-import { IDream } from "../interfaces/IDream"
+import { Dream } from "../models/Dream.model"
+import { getUserByToken } from "../helpers/token.helper"
+import { IUser } from "../interfaces/User.interface"
+import { IDream } from "../interfaces/Dream.interface"
 import { Types } from "mongoose"
 
 export default class DreamController {
