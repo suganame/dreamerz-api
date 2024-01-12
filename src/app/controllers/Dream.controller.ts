@@ -11,7 +11,11 @@ export default class DreamController {
         res: Response
     ): Promise<Response> {
         try {
-            const user: IUser = await getUserByToken(req, res)
+            const user: IUser | boolean = await getUserByToken(req, res)
+
+            if (!user || typeof user === "boolean") {
+                return res.status(401).json({ message: "Acesso Negado!" })
+            }
 
             const dreams: IDream[] = await Dream.find({
                 "user._id": user._id,
@@ -36,7 +40,11 @@ export default class DreamController {
         const data: IDream = req.body
 
         try {
-            const user: IUser = await getUserByToken(req, res)
+            const user: IUser | boolean = await getUserByToken(req, res)
+
+            if (!user || typeof user === "boolean") {
+                return res.status(401).json({ message: "Acesso Negado!" })
+            }
 
             const dream: IDream = (await Dream.create({
                 name: data.name,
