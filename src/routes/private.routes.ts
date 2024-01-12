@@ -3,11 +3,30 @@ import DreamController from "../app/controllers/Dream.controller"
 import UserController from "../app/controllers/User.controller"
 import { UserValidationProfile } from "../app/middlewares/userMiddleware"
 import { validationMiddleware } from "../app/middlewares/validationMiddleware"
+import {
+    dreamValidationCreate,
+    dreamValidationUpdate,
+} from "../app/middlewares/dreamMiddleware"
 
 const router = Router()
 
+//DREAMS
 router.get("/dreams", DreamController.getAllByUserToken)
-router.post("/dreams", DreamController.createByUserToken)
+router.post(
+    "/dreams",
+    dreamValidationCreate(),
+    validationMiddleware,
+    DreamController.createByUserToken
+)
+router.patch(
+    "/dreams/:id",
+    dreamValidationUpdate(),
+    validationMiddleware,
+    DreamController.updateById
+)
+router.delete("/dreams/:id", DreamController.deleteById)
+
+//USERS
 router.get("/user/profile/", UserController.profile)
 router.patch(
     "/user/profile/:id",

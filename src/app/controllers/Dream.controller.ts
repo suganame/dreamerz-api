@@ -67,4 +67,47 @@ export default class DreamController {
             })
         }
     }
+
+    static async updateById(req: Request, res: Response): Promise<Response> {
+        const id: Types.ObjectId = new Types.ObjectId(req.params.id)
+        const data: IDream = req.body
+
+        try {
+            const dream: IDream | null = await Dream.findOneAndUpdate(id, data)
+
+            if (!dream) {
+                return res.status(404).json({ message: "Sonho não encontrado" })
+            }
+
+            return res
+                .status(200)
+                .json({ message: "Sonho atualizado com sucesso" })
+        } catch (error) {
+            return res.status(500).json({
+                message: "Há um erro, volte novamente mais tarde",
+                error,
+            })
+        }
+    }
+
+    static async deleteById(req: Request, res: Response): Promise<Response> {
+        const id: Types.ObjectId = new Types.ObjectId(req.params.id)
+
+        try {
+            const dream: IDream | null = await Dream.findOneAndDelete(id)
+
+            if (!dream) {
+                return res.status(404).json({ message: "Sonho não encontrado" })
+            }
+
+            return res
+                .status(200)
+                .json({ message: "Sonho apagado com sucesso" })
+        } catch (error) {
+            return res.status(500).json({
+                message: "Há um erro, volte novamente mais tarde",
+                error,
+            })
+        }
+    }
 }
