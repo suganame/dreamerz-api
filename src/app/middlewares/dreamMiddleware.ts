@@ -12,3 +12,9 @@ export const dreamValidationUpdate = () => {
         body("name").isString().withMessage("O nome é obrigatório"),
     ]
 }
+
+export const dreamValidationGetOneById = () => {
+    return [
+        param("id").isMongoId().withMessage("ID não está correto"),
+    ]
+}

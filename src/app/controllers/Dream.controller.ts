@@ -33,6 +33,36 @@ export default class DreamController {
         }
     }
 
+    static async getOneById(req: Request, res: Response): Promise<Response> {
+        const id: Types.ObjectId = new Types.ObjectId(req.params.id)
+
+        try {
+            const user: IUser | boolean = await getUserByToken(req, res)
+
+            if (!user || typeof user === "boolean") {
+                return res.status(401).json({ message: "Acesso Negado!" })
+            }
+
+            const dream: IDream | null = await Dream.findOne({
+                _id: id,
+                "user._id": user._id,
+            }).lean()
+
+            if (!dream) {
+                return res.status(404).json({ message: "Sonho não encontrado" })
+            }
+
+            return res
+                .status(200)
+                .json({ message: "Sonho encontrado com sucesso", dream })
+        } catch (error) {
+            return res.status(500).json({
+                message: "Há um erro, volte novamente mais tarde",
+                error,
+            })
+        }
+    }
+
     static async createByUserToken(
         req: Request,
         res: Response

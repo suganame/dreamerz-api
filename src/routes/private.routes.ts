@@ -5,6 +5,7 @@ import { UserValidationProfile } from "../app/middlewares/userMiddleware"
 import { validationMiddleware } from "../app/middlewares/validationMiddleware"
 import {
     dreamValidationCreate,
+    dreamValidationGetOneById,
     dreamValidationUpdate,
 } from "../app/middlewares/dreamMiddleware"
 
@@ -12,6 +13,12 @@ const router = Router()
 
 //DREAMS
 router.get("/dreams", DreamController.getAllByUserToken)
+router.get(
+    "/dreams/:id",
+    dreamValidationGetOneById(),
+    validationMiddleware,
+    DreamController.getOneById
+)
 router.post(
     "/dreams",
     dreamValidationCreate(),
