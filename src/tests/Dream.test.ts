@@ -1,7 +1,7 @@
 import request from "supertest"
 import app from "../app"
 import { Dream } from "../app/models/Dream.model"
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
+import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import { User } from "../app/models/User.model"
 
 describe("DreamController()", () => {
