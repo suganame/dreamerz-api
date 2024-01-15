@@ -1,11 +1,21 @@
 import request from "supertest"
 import app from "../app"
 import { Dream } from "../app/models/Dream.model"
-import { afterAll, describe, expect, it, vi } from "vitest"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 import { User } from "../app/models/User.model"
 
 describe("DreamController()", () => {
     afterAll(async () => {
+        await Dream.deleteOne({
+            name: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo",
+        })
+
+        await User.deleteOne({
+            email: "92j8f89123jf8923jfj8923fj89@example.com",
+        })
+    })
+
+    beforeAll(async () => {
         await Dream.deleteOne({
             name: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo",
         })

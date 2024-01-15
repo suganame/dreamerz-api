@@ -11,7 +11,7 @@ app.use(express.json())
     .use(
         cors({
             credentials: true,
-            origin: `http://localhost:${process.env.FRONT_PORT}`,
+            origin: `http://localhost:${process.env.API_PORT}`,
         })
     )
     .use(express.static("public"))

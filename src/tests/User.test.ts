@@ -2,7 +2,7 @@ import request from "supertest"
 import app from "../app"
 import { User } from "../app/models/User.model"
 import bcrypt from "bcrypt"
-import { afterAll, describe, expect, it } from "vitest"
+import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
 describe("UserController", () => {
     afterAll(async () => {
@@ -11,11 +11,17 @@ describe("UserController", () => {
         })
     })
 
+    beforeAll(async () => {
+        await User.deleteOne({
+            email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
+        })
+    })
+
     it("should register a new user", async () => {
         const userData = {
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
-            password: "password123",
-            confirmPassword: "password123",
+            password: "2Qj!@fj%89@N23fF89",
+            confirmPassword: "2Qj!@fj%89@N23fF89",
             name: "Test User",
         }
 
@@ -24,9 +30,7 @@ describe("UserController", () => {
             .send(userData)
             .expect(201)
 
-        expect(response.body.message).toContain(
-            "Usuário Test User criado com sucesso!"
-        )
+        expect(response.body.message).toContain("Você está autenticado")
         expect(response.body.token).toBeDefined()
 
         const user = await User.findOne({ email: userData.email })
@@ -42,8 +46,8 @@ describe("UserController", () => {
     it("should return 422 for duplicate email", async () => {
         const duplicateUserData = {
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
-            password: "password456",
-            confirmPassword: "password456",
+            password: "2Qj!@fj%89@N23fF89",
+            confirmPassword: "2Qj!@fj%89@N23fF89",
             name: "Duplicate User",
         }
 
@@ -60,8 +64,8 @@ describe("UserController", () => {
     it("should return 422 for password mismatch", async () => {
         const mismatchedPasswordData = {
             email: "mismatched@example.com",
-            password: "password123",
-            confirmPassword: "password456",
+            password: "2Qj!@fj%89@N23fF89",
+            confirmPassword: "2Qj!*!@&#¨&*3efds323fF89",
             name: "Mismatched User",
         }
 
