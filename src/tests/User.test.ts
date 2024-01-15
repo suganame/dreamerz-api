@@ -2,7 +2,7 @@ import request from "supertest"
 import { User } from "../app/models/User.model"
 import bcrypt from "bcrypt"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
-import { serverStart, serverStop } from "./express.mock"
+import { serverStart, serverStop } from "./mocks/express.mock"
 
 let server: any
 
