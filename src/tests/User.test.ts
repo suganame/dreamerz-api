@@ -1,20 +1,28 @@
 import request from "supertest"
+const { createServer } = require("http")
 import app from "../app"
 import { User } from "../app/models/User.model"
 import bcrypt from "bcrypt"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
+let server: any
+
 describe("UserController", () => {
-    afterAll(async () => {
+    beforeAll(async (done) => {
+        server = await createServer(app)
+        await server.listen(0, done)
+
         await User.deleteOne({
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
         })
     })
 
-    beforeAll(async () => {
+    afterAll(async (done) => {
         await User.deleteOne({
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
         })
+
+        await server.close(done)
     })
 
     it("should register a new user", async () => {
@@ -25,7 +33,7 @@ describe("UserController", () => {
             name: "Test User",
         }
 
-        const response = await request(app)
+        const response = await request(server)
             .post("/register")
             .send(userData)
             .expect(201)
@@ -51,7 +59,7 @@ describe("UserController", () => {
             name: "Duplicate User",
         }
 
-        const response = await request(app)
+        const response = await request(server)
             .post("/register")
             .send(duplicateUserData)
             .expect(422)
@@ -69,7 +77,7 @@ describe("UserController", () => {
             name: "Mismatched User",
         }
 
-        const response = await request(app)
+        const response = await request(server)
             .post("/register")
             .send(mismatchedPasswordData)
             .expect(422)
