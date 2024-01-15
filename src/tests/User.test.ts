@@ -1,28 +1,26 @@
 import request from "supertest"
-const { createServer } = require("http")
-import app from "../app"
 import { User } from "../app/models/User.model"
 import bcrypt from "bcrypt"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
+import { serverStart, serverStop } from "./express.mock"
 
 let server: any
 
 describe("UserController", () => {
-    beforeAll(async (done) => {
-        server = await createServer(app)
-        await server.listen(0, done)
+    server = serverStart()
 
+    beforeAll(async () => {
         await User.deleteOne({
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
         })
     })
 
-    afterAll(async (done) => {
+    afterAll(async () => {
         await User.deleteOne({
             email: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo@example.com",
         })
 
-        await server.close(done)
+        serverStop()
     })
 
     it("should register a new user", async () => {

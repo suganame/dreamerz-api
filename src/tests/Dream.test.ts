@@ -1,16 +1,14 @@
 import request from "supertest"
-const { createServer } = require("http")
-import app from "../app"
 import { Dream } from "../app/models/Dream.model"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import { User } from "../app/models/User.model"
+import { serverStart, serverStop } from "./express.mock"
 
 let server: any
 
 describe("DreamController()", () => {
-    beforeAll(async (done) => {
-        server = await createServer(app)
-        await server.listen(0, done)
+    beforeAll(async () => {
+        server = serverStart()
 
         await Dream.deleteOne({
             name: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo",
@@ -21,7 +19,7 @@ describe("DreamController()", () => {
         })
     })
 
-    afterAll(async (done) => {
+    afterAll(async () => {
         await Dream.deleteOne({
             name: "OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjo",
         })
@@ -30,7 +28,7 @@ describe("DreamController()", () => {
             email: "92j8f89123jf8923jfj8923fj89@example.com",
         })
 
-        await server.close(done)
+        serverStop()
     })
 
     it("should create a dream successfully", async () => {
@@ -47,7 +45,11 @@ describe("DreamController()", () => {
             confirmPassword: "2Qj!@fj%89@N23fF89",
         }
 
-        const user = await request(server).post("/register").send(userData)
+        const user = await request(server)
+            .post("/register")
+            .send(userData)
+            .expect(201)
+
         const token = user.body.token
 
         const response = await request(server)
